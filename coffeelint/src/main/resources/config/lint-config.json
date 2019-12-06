@@ -1,0 +1,162 @@
+{
+  "jiraAccount": {
+    "baseUrl": "",
+    "loginName": "",
+    "loginPassword": ""
+  },
+  "issueType": [
+    "anonymousclass",
+    "innerclass",
+    "log",
+    "map",
+    "msg",
+    "service",
+    "shared",
+    "staticinfo",
+    "thread",
+    "toast",
+    "unfinal"
+  ],
+  "methodKeys": [
+    "getSharedPreferences",
+    "makeText",
+    "startService"
+  ],
+  "constructorKeys": [
+    "android.os.Message",
+    "java.lang.Thread",
+    "java.util.HashMap",
+    "android.util.SparseArray"
+  ],
+  "classKeys": [
+    "android.os.Handler",
+    "java.util.TimerTask"
+  ],
+  "log": {
+    "type": null,
+    "keys": [
+      "android.util.Log",
+      "System.out"
+    ],
+    "id": "LogUseError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：你应该使用我们团队自定义的 Log 打印工具类 LogUtil 。",
+    "explanation": "为了能够更好的控制 Log 打印的开关，你不能直接使用 {android.util.Log} 或者 {System.out.println} 直接打印日志，你应该使用我们团队自定义的 Log 打印工具类 LogUtil 。"
+  },
+  "toast": {
+    "type": "method",
+    "keys": [
+      "makeText"
+    ],
+    "id": "ToastUseError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：你应该使用我们团队自定义的 Toast 工具类 ToastUtil 。",
+    "explanation": "你不能直接使用 {android.widget.Toast} ，你应该使用我们团队自定义的 Toast 工具类 ToastUtil 。"
+  },
+  "shared": {
+    "type": "method",
+    "keys": [
+      "getSharedPreferences"
+    ],
+    "id": "SharePreManagerUseError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：你应该使用我们团队自定义的 SharePreManager 工具类。",
+    "explanation": "你不能直接使用 getSharedPreferences() ，你应该使用我们团队自定义的 SharePreManager 工具类。"
+  },
+  "service": {
+    "type": "method",
+    "keys": [
+      "startService"
+    ],
+    "id": "StartServiceError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：不能直接使用 startService()，应该使用 startServiceSafely() 。",
+    "explanation": "为了防止 crash ，不能直接使用 startService()，应该使用 startServiceSafely() 。"
+  },
+  "msg": {
+    "type": "constructor",
+    "keys": [
+      "android.os.Message"
+    ],
+    "id": "MessageObtainUseError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：你应该使用 {Message.Obtain() 或者 handler.obtainMessage} 。",
+    "explanation": "你不能直接使用 {new Message()} ，你应该使用 {handler.obtainMessage} 或者 {Message.Obtain()} 。"
+  },
+  "thread": {
+    "type": "constructor",
+    "keys": [
+      "java.lang.Thread"
+    ],
+    "id": "ThreadUseError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：你应该使用我们团队自定义的 Thread 工具类 {ConcurrentManager} 。",
+    "explanation": "你不能直接使用 {new Thread()} 创建线程， 你应该使用我们团队自定义的Thread 工具类 {ConcurrentManager} 。"
+  },
+  "map": {
+    "type": "constructor",
+    "keys": [
+      "java.util.HashMap",
+      "android.util.SparseArray"
+    ],
+    "id": "MapUseError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：为了节约内存，提高性能，可以使用 %1$s 替换 %2$s 。",
+    "explanation": "使用 SpareArray 替换 HashMap ,可以减少存储空间，节约内存，提升性能。\n\n如果必须使用 Map ，可以使用注解 @SuppressLint(\"MapUseError\") 跳过检测"
+  },
+  "staticinfo": {
+    "type": null,
+    "keys": [
+      "StaticInfo."
+    ],
+    "id": "StaticInfoError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：此处容易出现空指针，请参考最终修改建议进行修改。",
+    "explanation": "\n修改建议，例：\n\nUser user = StaticInfo.getUser();\nif (user != null) {\n  uid = user.uid;\n"
+  },
+  "unfinal": {
+    "type": null,
+    "keys": [
+      "Constants",
+      "final",
+      "Constants.CID",
+      "Constants.KEY",
+      "Constants.APP_KEY",
+      "Constants.APP_SECRET"
+    ],
+    "id": "FinalError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "不能赋值给常量。",
+    "explanation": "请修改为非常量。"
+  },
+  "innerclass": {
+    "type": "class",
+    "keys": [],
+    "id": "InnerClassError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：这里应该使用静态内部类，防止出现内存泄漏。",
+    "explanation": "请避免直接使用非静态内部类，应该使用静态内部类，防止出现内存泄漏。\n\n另，使用弱引用时防止出现空指针。\n\n如您能确保使用该非静态内部类不会出现内存泄漏，可以添加 @SuppressLint(\"InnerClassError\") 跳过检测。\n\n修改建议，例：\n\nprivate static final class SimpleClass {\n\n\tprivate WeakReference<Activity> weakReference;\n\n\tprivate Activity mActivity;\n\n\tpublic SimpleClass(Activity activity) {\n\t\tweakReference = new WeakReference<>(activity);\n\t}\n\n\tpublic void test() {\n\t\tmActivity = weakReference.get();\n\t\tif (mActivity != null) {\n\t\t\t// do something\n\t\t}\n\t}\n\n}"
+  },
+  "anonymousclass": {
+    "type": "class",
+    "keys": [
+      "android.os.Handler",
+      "java.util.TimerTask"
+    ],
+    "id": "AnonymousClassError",
+    "priority": 9,
+    "severity": "Error",
+    "description": "警告：这里应该使用静态内部类，防止出现内存泄漏 (%1$s)。",
+    "explanation": "请避免直接使用匿名内部类，应该使用静态内部类，防止出现内存泄漏。\n\n另，使用弱引用时防止出现空指针。\n\n如您能确保使用该匿名内部类不会出现内存泄漏，可以添加 @SuppressLint(\"AnonymousClassError\") 跳过检测。\n\n修改建议，例：\n\nprivate static final class SimpleClass {\n\n\tprivate WeakReference<Activity> weakReference;\n\n\tprivate Activity mActivity;\n\n\tpublic SimpleClass(Activity activity) {\n\t\tweakReference = new WeakReference<>(activity);\n\t}\n\n\tpublic void test() {\n\t\tmActivity = weakReference.get();\n\t\tif (mActivity != null) {\n\t\t\t// do something\n\t\t}\n\t}\n\n}"
+  }
+}

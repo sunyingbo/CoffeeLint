@@ -1,0 +1,48 @@
+#!/usr/bin/env bash
+STAGE_FILES=$(git diff --cached --name-only --diff-filter=ACMRT -- '*.java')
+if test ${#STAGE_FILES} -gt 0
+then
+
+    echo 'Lint开始扫描您提交的代码'
+    echo '代码扫描中，请稍等。。。'
+
+    lint_result=null
+
+    CURRENT_PATH=$(cd `dirname $0`; pwd)
+    CURRENT_PATH=${CURRENT_PATH%/*}
+    CURRENT_PATH=${CURRENT_PATH%/*}
+
+    module_name=${CURRENT_PATH##*/}
+    ../gradlew :$module_name:lintIncrement &>/dev/null
+
+    PASS=true
+
+    if [ -f "$CURRENT_PATH/lint_result.txt" ]; then
+
+        PASS=false
+
+        while read line
+        do
+            if [[ ${line%%[ ]*} = "-" ]]; then
+                line="--${line%：*} ---"
+            fi
+            echo "\033[31m $line \033[0m"
+        done < "$CURRENT_PATH/lint_result.txt"
+
+        rm -f $CURRENT_PATH/lint_result.txt
+
+    fi
+
+    if ! $PASS; then
+        git reset --mixed HEAD &>/dev/null
+        echo "\n\033[31m 本次 lint 检查没通过，不能提交！请查看检测报告并及时修改 \033[0m"
+        exit 1
+    else
+        echo "lint检查完毕！可以提交"
+        echo "提交结果："
+    fi
+else
+    echo '没有文件需要检查'
+fi
+
+exit 0

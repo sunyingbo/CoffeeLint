@@ -1,0 +1,47 @@
+apply plugin: 'groovy'
+apply plugin: 'maven'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile gradleApi()
+    compile localGroovy()
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile 'com.android.tools.build:gradle:2.1.0'
+    compile 'com.android.tools.build:gradle-core:2.1.0'
+}
+
+//打jar包需要的配置
+jar {
+    manifest {
+        attributes(
+                "Manifest-Version": 1.0,
+                "Implementation-Title": "Gradle",
+                "Main-Class": "com.syb.test.IssueTypeTestClass"
+        )
+    }
+    from { zipTree(new File(projectDir,"libs/fastjson-1.2.56.jar")) }
+    from{ zipTree(new File(projectDir,"libs/okhttp-3.14.0.jar")) }
+    from{ zipTree(new File(projectDir,"libs/okio-1.13.0.jar")) }
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'com.syb'
+    PUBLISH_ARTIFACT_ID = 'coffeelintplugin'
+    PUBLISH_VERSION = '1.0'
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri('../repo'))
+            pom.project {
+                groupId project.PUBLISH_GROUP_ID
+                artifactId project.PUBLISH_ARTIFACT_ID
+                version project.PUBLISH_VERSION
+            }
+        }
+    }
+}
